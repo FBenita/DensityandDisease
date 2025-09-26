@@ -8,14 +8,7 @@ Created on Mon Sep 22 04:17:13 2025
 # =============================================================================
 # SCRIPT FOR POLICY RECOMMENDATION SYNTHESIS
 # =============================================================================
-# This script performs Step 2 of the analysis plan. It uses a zero-shot
-# classification model to categorize policy recommendations and generates a
-# synthesis matrix visualizing the results.
-
 # --- Required Libraries ---
-# In your 'covid' conda environment, make sure you have these installed.
-# You will likely need to install transformers, torch, tqdm, and seaborn.
-#
 # pandas: For data manipulation
 #   conda install -c conda-forge pandas
 #
@@ -32,7 +25,6 @@ Created on Mon Sep 22 04:17:13 2025
 #   conda install -c conda-forge seaborn matplotlib
 # =============================================================================
 
-
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -46,8 +38,8 @@ tqdm.pandas()
 # =============================================================================
 # --- 1. CONFIGURATION & SETUP ---
 # =============================================================================
-INPUT_FILE_PATH = r"C:\Users\L03565094\Dropbox\Long+Francisco\5-Data_2025\Articles_Jan2020_Dec2025.csv"
-OUTPUT_FOLDER_PATH = r"C:/Users/L03565094/Dropbox/Long+Francisco/5-Results_2025/"
+INPUT_FILE_PATH = r"C:\Articles_Jan2020_Dec2025.csv"
+OUTPUT_FOLDER_PATH = r"C:/5-Results_2025/"
 
 # The name for the new CSV file with the classification results
 OUTPUT_CSV_NAME = "Articles_with_Policy_Tags.csv"
@@ -55,7 +47,6 @@ OUTPUT_CSV_NAME = "Articles_with_Policy_Tags.csv"
 OUTPUT_FIGURE_NAME = "policy_synthesis_heatmap.png"
 
 # --- Define Classification Labels ---
-# You can customize these lists as needed
 POLICY_THEME_LABELS = ["Public Health Measures", "Economic Support", "Healthcare System Capacity",
                        "Travel and Border Control", "Communication Strategy", "Vaccination Policy"]
 
@@ -119,10 +110,10 @@ if __name__ == "__main__":
 # --- Create Synthesis Matrix, Heatmap, and Export Data ---
 print("\nGenerating synthesis matrix and heatmap...")
 
-# As planned, we focus the spatial analysis on the robust pre-vaccine dataset
+# Focus the spatial analysis on the robust pre-vaccine dataset
 pre_vax_df = df[df['available_vaccines'] == 0].copy()
 
-# Handle multiple themes by "exploding" the DataFrame
+
 pre_vax_df['Policy_Theme'] = pre_vax_df['Policy_Theme'].str.split(', ')
 exploded_df = pre_vax_df.explode('Policy_Theme')
 
@@ -135,20 +126,19 @@ exploded_df['Policy_Theme'] = exploded_df['Policy_Theme'].str.strip()
 # Create the cross-tabulation matrix
 synthesis_matrix = pd.crosstab(exploded_df['Policy_Theme'], exploded_df['small_large'])
 
-# --- NEW: Export the synthesis_matrix to a CSV file ---
+# --- Export the synthesis_matrix to a CSV file ---
 matrix_output_path = os.path.join(OUTPUT_FOLDER_PATH, "policy_synthesis_matrix.csv")
 synthesis_matrix.to_csv(matrix_output_path)
 print(f"Successfully saved synthesis matrix to: {matrix_output_path}")
 
-# --- NEW: Create and export a table with example policies ---
+# --- Create and export a table with example policies ---
 # For each theme, find the first non-empty policy recommendation
 example_policies = exploded_df.groupby('Policy_Theme')['Policy recommendations'].first().reset_index()
 example_output_path = os.path.join(OUTPUT_FOLDER_PATH, "policy_examples_by_theme.csv")
 example_policies.to_csv(example_output_path, index=False)
 print(f"Successfully saved example policies to: {example_output_path}")
 
-
-# Visualize as a heatmap (this part remains the same)
+# Visualize as a heatmap 
 plt.figure(figsize=(12, 8))
 sns.heatmap(synthesis_matrix, annot=True, fmt="g", cmap="Blues", linewidths=.5)
 
@@ -163,4 +153,5 @@ plt.savefig(output_fig_path, bbox_inches='tight')
 plt.close() # Added to ensure the figure closes properly
 
 print(f"Successfully saved synthesis heatmap to: {output_fig_path}")
+
 print("\n--- Analysis Complete ---")
