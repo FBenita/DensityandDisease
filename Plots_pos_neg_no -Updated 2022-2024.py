@@ -2,16 +2,12 @@
 """
 Created on Mon Sep 22 10:18:28 2025
 
-@author: Francisco
+@author: Francisco Benita
 """
 
 # =============================================================================
 # SCRIPT FOR DESCRIPTIVE FREQUENCY PLOTS
 # =============================================================================
-# This script updates the descriptive bar plots from the original paper,
-# showing the frequency of findings for the population density vs. COVID-19
-# relationship by geographical scale and world region.
-
 # --- Required Libraries ---
 # conda install -c conda-forge pandas seaborn matplotlib
 # or: pip install pandas seaborn matplotlib
@@ -25,8 +21,8 @@ import os
 # =============================================================================
 # --- 1. CONFIGURATION & SETUP ---
 # =============================================================================
-INPUT_FILE_PATH = r"C:\Users\L03565094\Dropbox\Long+Francisco\5-Data_2025\Articles_Jan2020_Dec2025.csv"
-OUTPUT_FOLDER_PATH = r"C:/Users/L03565094/Dropbox/Long+Francisco/5-Results_2025/"
+INPUT_FILE_PATH = r"C:\Users\Articles_Jan2020_Dec2025.csv"
+OUTPUT_FOLDER_PATH = r"C:/Users/5-Results_2025/"
 
 if not os.path.exists(OUTPUT_FOLDER_PATH):
     os.makedirs(OUTPUT_FOLDER_PATH)
@@ -125,12 +121,11 @@ scale_counts_df.to_csv(output_csv_scale)
 print(f"Data for geographical scale plot saved to: {output_csv_scale}")
 
 # --- Data for Plot 2 (World Region) ---
-# We already calculated the proportions in 'region_props'. We can save that.
-# For clarity, let's also calculate the raw counts.
 region_counts_df = pd.crosstab(df_filtered['Region'], df_filtered['pop_density'])
 output_csv_region = os.path.join(OUTPUT_FOLDER_PATH, "data_by_world_region.csv")
 region_counts_df.to_csv(output_csv_region)
 print(f"Data for world region plot saved to: {output_csv_region}")
+
 
 
 print("\n--- Analysis Complete ---")
