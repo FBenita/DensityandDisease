@@ -5,13 +5,10 @@ Created on Mon Sep 22 10:44:21 2025
 @author: Francisco Benita
 """
 # =============================================================================
-# SCRIPT TO GENERATE WORLD MAP (FINAL, CORRECTED OFFLINE VERSION)
+# SCRIPT TO GENERATE WORLD MAP 
 # =============================================================================
-# This script uses a downloaded shapefile to create the world map,
-# avoiding issues with online packages.
 
 # --- Required Libraries ---
-# In your 'covid' conda environment, ensure these are installed:
 # conda install -c conda-forge pandas geopandas matplotlib
 # =============================================================================
 
@@ -23,18 +20,16 @@ import os
 # =============================================================================
 # --- 1. CONFIGURATION & SETUP ---
 # =============================================================================
-INPUT_FILE_PATH = r"C:\Users\L03565094\Dropbox\Long+Francisco\5-Data_2025\Articles_Jan2020_Dec2025.csv"
-OUTPUT_FOLDER_PATH = r"C:/Users/L03565094/Dropbox/Long+Francisco/5-Results_2025/"
+INPUT_FILE_PATH = r"C:\Users\Articles_Jan2020_Dec2025.csv"
+OUTPUT_FOLDER_PATH = r"C:/Users/5-Results_2025/"
 
-# --- NEW: Set the path to the shapefile you downloaded and unzipped ---
-# This path must point to the .shp file specifically.
-SHAPEFILE_PATH = r"C:\Users\L03565094\Dropbox\Long+Francisco\5-Data_2025\map_data\ne_110m_admin_0_countries.shp"
+SHAPEFILE_PATH = r"C:\Users\ne_110m_admin_0_countries.shp"
 
 if not os.path.exists(OUTPUT_FOLDER_PATH):
     os.makedirs(OUTPUT_FOLDER_PATH)
 
 # =============================================================================
-# --- 2. DATA PREPARATION (UPDATED) ---
+# --- 2. DATA PREPARATION ---
 # =============================================================================
 print("--- Generating World Map of Study Frequency ---")
 
@@ -45,7 +40,7 @@ except FileNotFoundError:
     print(f"ERROR: Input file not found at {INPUT_FILE_PATH}")
     exit()
 
-# --- NEW LOGIC TO PROCESS THE 'Countries' COLUMN ---
+# --- 
 # 1. Use the 'Countries' column as our source.
 # 2. Drop rows where the 'Countries' column is empty (NaN).
 df.dropna(subset=['Countries'], inplace=True)
@@ -53,7 +48,7 @@ df.dropna(subset=['Countries'], inplace=True)
 # 3. Split the strings in the 'Countries' column by comma.
 df['Countries'] = df['Countries'].str.split(', ')
 
-# 4. "Explode" the DataFrame. This creates a new row for each country in a list.
+# 4. "Explode" the DataFrame.
 df_exploded = df.explode('Countries')
 
 # 5. Clean up any extra whitespace from country names.
@@ -62,7 +57,6 @@ df_exploded['Countries'] = df_exploded['Countries'].str.strip()
 # 6. Count the frequency of each country.
 country_counts = df_exploded['Countries'].value_counts().reset_index()
 country_counts.columns = ['country', 'study_count']
-# --- END NEW LOGIC ---
 
 print("\nCountry Counts (Top 10):")
 print(country_counts.head(10))
@@ -137,5 +131,6 @@ ax.axis('off')
 output_map_path = os.path.join(OUTPUT_FOLDER_PATH, "study_distribution_world_map.png")
 plt.savefig(output_map_path, dpi=300)
 print(f"Map saved to: {output_map_path}")
+
 
 print("\n--- Analysis Complete ---")
