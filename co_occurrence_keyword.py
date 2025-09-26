@@ -7,10 +7,6 @@ Created on Mon Sep 22 02:37:28 2025
 # =============================================================================
 # SCRIPT FOR TEMPORAL KEYWORD NETWORK ANALYSIS
 # =============================================================================
-# This script loads review data, cleans keywords, separates the data into
-# pre-vaccine and post-vaccine periods, and generates keyword co-occurrence
-# network visualizations for each period.
-
 # --- Required Libraries ---
 # conda install -c conda-forge pandas networkx matplotlib
 # or: pip install pandas networkx matplotlib
@@ -31,12 +27,11 @@ from scipy.stats import gaussian_kde
 # --- 1. CONFIGURATION & SETUP ---
 # =============================================================================
 # IMPORTANT: Double-check that these file paths are correct for your system.
-INPUT_FILE_PATH = r"C:\Users\L03565094\Dropbox\Long+Francisco\5-Data_2025\Articles_Jan2020_Dec2025.csv"
-OUTPUT_FOLDER_PATH = r"C:/Users/L03565094/Dropbox/Long+Francisco/5-Results_2025/"
+INPUT_FILE_PATH = r"C:\Users\Articles_Jan2020_Dec2025.csv"
+OUTPUT_FOLDER_PATH = r"C:/Users/5-Results_2025/"
 
 TOP_N_KEYWORDS = 40
 
-# Create the output folder if it doesn't exist
 if not os.path.exists(OUTPUT_FOLDER_PATH):
     os.makedirs(OUTPUT_FOLDER_PATH)
     print(f"Created output folder: {OUTPUT_FOLDER_PATH}")
@@ -45,17 +40,15 @@ if not os.path.exists(OUTPUT_FOLDER_PATH):
 # --- 2. DATA PROCESSING & NETWORK FUNCTIONS ---
 # =============================================================================
 
-# Define your cleaning rules
 normalization_map = {
     # (Your COVID-19 and Population Density terms remain the same)
     "coronavirus": "covid-19", "sars-cov-2": "covid-19",
     "population density": "population-density",
   
-    
-    # Geographic terms (standardize but don't remove from network)
+    # Geographic terms 
     "united states": "usa", "u.s.": "usa", "united kingdom": "uk",
 
-    # ---  Standardize Specific Methodological Terms ---
+    # ---  Methodological Terms ---
     "gwr model": "gwr",
     "geographically weighted regression": "gwr",
     "geographically weighted regression (gwr)": "gwr",
@@ -72,23 +65,23 @@ normalization_map = {
 }
 
 stop_words = {
-    # --- Core topics (too obvious to plot as nodes) ---
+    # --- 
     "covid-19", "19", "covid", "population-density", "density","pandemics",
     "betacoronavirus", "pneumonia, viral",
     
-    # --- NEW: Country & Region names (covered by the map) ---
+    # ---
     "usa", "india", "china", "canada", "hong kong", "africa",
     "uk", "turkey", "italy", "iran", "spain", "brazil", "germany",
     "europe", "asia", "north america", "african", "counties", "city",
     
-    # --- Redundant / overly broad terms ---
+    # --- 
     "pandemics", "disease transmission", "disease spread",
     "coronavirus disease 2019", "severe acute respiratory syndrome",
     "pandemic", "epidemic", "communicable disease control",
     "severe acute respiratory syndrome coronavirus 2",
     "coronaviruses", "incidence", "coronavirus infections", "infection",
     
-    # --- Generic methodological terms (keep these out) ---
+    # ---
     "article", "human", "humans", "methods", "data", "regression","risk", "model",
     "regression analysis", "cluster analysis", "spatial analysis",
     "risk factor", "risk assessment", "population statistics", "risk factors",
@@ -182,8 +175,7 @@ def visualize_network(G, title, file_path):
     
     partition = community_louvain.best_partition(G, weight='weight')
     
-    # --- MODIFIED: Use a lighter, more distinct color palette ---
-    # Palettes like 'pastel1', 'Set3', or 'tab20' are better for this.
+    # --- 
     cmap = plt.get_cmap('Set3', max(partition.values()) + 1)
     
     node_colors = [cmap(partition[node]) for node in G.nodes()]
@@ -194,7 +186,7 @@ def visualize_network(G, title, file_path):
     nx.draw_networkx_nodes(G, pos, node_size=node_sizes, node_color=node_colors, alpha=0.9)
     nx.draw_networkx_edges(G, pos, width=edge_widths, edge_color='gray', alpha=0.6)
     
-    # --- NEW: Draw labels with a white outline for readability ---
+    # ---
     labels = nx.draw_networkx_labels(G, pos, font_size=12, font_family='sans-serif')
     for _, t in labels.items():
         t.set_path_effects([PathEffects.withStroke(linewidth=3, foreground='white')])
@@ -263,11 +255,10 @@ def visualize_vosviewer_style(G, title, file_path):
     cmap = plt.get_cmap('Set3', max(partition.values()) + 1)
     node_colors = [cmap(partition[node]) for node in G.nodes()]
 
-    # Node styling remains the same
     node_sizes = [d['frequency'] * 800 for _, d in G.nodes(data=True)]
     nx.draw_networkx_nodes(G, pos, node_size=node_sizes, node_color=node_colors, alpha=0.4)
     
-    # --- MODIFIED: Make edges darker and more opaque ---
+    # --- 
     nx.draw_networkx_edges(G, pos, width=0.3, edge_color='black', alpha=0.2) # Changed color and alpha
     
     # Label styling remains the same
@@ -363,4 +354,5 @@ if __name__ == "__main__":
     export_network_data(post_vax_network, post_vax_partition, 
                         os.path.join(OUTPUT_FOLDER_PATH, "network_data_post_vaccine.csv"))
     
+
     print("\n--- Analysis Complete ---")
