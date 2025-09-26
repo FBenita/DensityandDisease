@@ -38,8 +38,8 @@ tqdm.pandas()
 # =============================================================================
 # --- 1. CONFIGURATION & SETUP ---
 # =============================================================================
-INPUT_FILE_PATH = r"C:\Articles_Jan2020_Dec2025.csv"
-OUTPUT_FOLDER_PATH = r"C:/5-Results_2025/"
+INPUT_FILE_PATH = r"C:\Users\Articles_Jan2020_Dec2025.csv"
+OUTPUT_FOLDER_PATH = r"C:/Users/5-Results_2025/"
 
 # The name for the new CSV file with the classification results
 OUTPUT_CSV_NAME = "Articles_with_Policy_Tags.csv"
@@ -155,3 +155,4 @@ plt.close() # Added to ensure the figure closes properly
 print(f"Successfully saved synthesis heatmap to: {output_fig_path}")
 
 print("\n--- Analysis Complete ---")
+
