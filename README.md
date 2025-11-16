@@ -29,3 +29,6 @@ The Python scripts are designed to be run in a Conda environment (see `requireme
 ## License
 
 The code and data in this repository are provided under the MIT Licens
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17624551.svg)](https://doi.org/10.5281/zenodo.17624551)
+
