@@ -22,8 +22,8 @@ The files are organized to facilitate the full replication of the methodology an
 
 The Python scripts are designed to be run in a Conda environment (see `requirements.txt`) and perform the following analyses:
 
-1.  **Descriptive Statistics:** Generates the frequency bar charts of findings by geographical scale and world region (Figure 1) and the table of density definitions (Tables 1 and 2).
-3.  **Thematic Evolution Analysis:** Performs the keyword co-occurrence analysis (using TF-IDF and author keywords), runs the Louvain community detection, and exports the network data and all visualizations (Figures 2 and 3).
+1.  **Descriptive Statistics:** Generates the frequency bar charts of findings by geographical scale and world region (Figure 2) and the table of density definitions (Tables 1 and 2).
+3.  **Thematic Evolution Analysis:** Performs the keyword co-occurrence analysis (using TF-IDF and author keywords), runs the Louvain community detection, and exports the network data and all visualizations (Figures 3 and 4).
 4.  **Policy Synthesis:** Performs the zero-shot classification to categorize all policy recommendations by theme, pandemic stage, and governance level, and exports the final synthesis tables (Tables 3 and 4).
 
 ## License
