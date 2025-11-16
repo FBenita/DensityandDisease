@@ -88,21 +88,9 @@ stop_words = {
     "principal component analysis", "results", "study", "impact", "conclusions"
 }
 
-#def process_keywords(df):
-#    """Cleans, normalizes, and processes the 'Keywords' column."""
-#    df = df.dropna(subset=['Keywords'])
-#    keyword_lists = []
-#    for _, row in df.iterrows():
-#        raw_keywords = [kw.strip().lower() for kw in str(row['Keywords']).split(';')]
-#        normalized_keywords = [normalization_map.get(kw, kw) for kw in raw_keywords]
-#        cleaned_keywords = {kw for kw in normalized_keywords if kw and kw not in stop_words}
-#        if cleaned_keywords:
-#            keyword_lists.append(list(cleaned_keywords))
-#    return keyword_lists
-
 def process_keywords(df):
     """
-    HYBRID APPROACH: Cleans and processes both the 'Keywords' column and
+    Cleans and processes both the 'Keywords' column and
     extracts the top N keywords from the 'Abstract' column using TF-IDF.
     """
     N_TOP_TERMS_FROM_ABSTRACT = 5
@@ -190,7 +178,7 @@ def visualize_network(G, title, file_path):
     labels = nx.draw_networkx_labels(G, pos, font_size=12, font_family='sans-serif')
     for _, t in labels.items():
         t.set_path_effects([PathEffects.withStroke(linewidth=3, foreground='white')])
-    # --- END NEW SECTION ---
+    # ------
     
     plt.title(title, fontsize=30)
     plt.axis('off')
@@ -356,3 +344,4 @@ if __name__ == "__main__":
     
 
     print("\n--- Analysis Complete ---")
+
